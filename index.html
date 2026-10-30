@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"> <!-- permet d'adapter la taille du site à celle de l'écran -->
+<title>HELLAGOOS games by moulgo</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"> <!-- permet d'utiliser des polices sans avoir à les télécharger -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> <!-- permet d'utiliser des polices sans avoir à les télécharger -->
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet"> <!-- importe les polices -->
+
+<!-- CSS... -->
+<style> 
+
+:root{
+  --bg:#04110A; --panel:#0A2415; --line:#1B6B3A; --dim:#3FAE66; --fg:#9DFFB5; --hi:#D9FFE3; --ink:#04110A;
+  --scr-bg:#04110A; --scr-fg:#9DFFB5;}
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:"VT323","Courier New",monospace;font-size:1.45rem;line-height:1.3}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--hi);outline-offset:4px}
+h1,h2,h3{font-family:"Silkscreen","Courier New",monospace;font-weight:700;margin:0;line-height:1.1}
+.wrap{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,3rem)}
+.page h2:focus{outline:none}
+.btn{display:inline-block;background:var(--fg);color:var(--ink);font-family:"Silkscreen",monospace;font-weight:700;font-size:1rem;text-decoration:none;padding:.7rem 1.2rem;border:0;cursor:pointer}
+.btn:hover{background:var(--hi)}
+
+header{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;padding:1.25rem 0}
+#logo{display:flex;font-family:"Silkscreen",monospace;font-weight:700;font-size:clamp(2rem,7vw,4.2rem);line-height:1;text-decoration:none;letter-spacing:-.02em;color:var(--hi)}
+#logo span{display:inline-block;transition:transform .3s cubic-bezier(.2,1.5,.4,1)}
+#logo .sp{width:.3em}
+.tools{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap}
+.tools a{text-decoration:none}
+.tools a:hover,.tools a[aria-current]{color:var(--hi);text-decoration:underline;text-underline-offset:6px}
+#lang{background:none;color:var(--fg);border:2px solid var(--fg);font-family:"Silkscreen",monospace;font-size:.85rem;padding:.35rem .6rem;cursor:pointer}
+#lang:hover{background:var(--fg);color:var(--ink)}
+
+.desk{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:2.5rem;align-items:start;padding:1rem 0 4rem}
+@media (max-width:760px){.desk{grid-template-columns:1fr}}
+.monitor{border:8px solid var(--line);border-radius:22px 22px 6px 6px;background:var(--panel);padding:10px}
+.screen{position:relative;background:var(--scr-bg);color:var(--scr-fg);border-radius:10px;min-height:330px;max-height:420px;overflow:auto;padding:1rem 1.2rem;text-shadow:0 0 6px rgba(157,255,181,.55)}
+.screen::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(transparent 0 2px,rgba(0,0,0,.22) 2px 3px)}
+.screen h1{font-size:1.1rem;margin-bottom:1rem;color:var(--scr-fg)}
+.news article{margin:0 0 1rem}
+.news time{color:#3FAE66;display:block}
+.news p{margin:0}
+.status{margin:1.2rem 0 0;color:#3FAE66}
+.status::after{content:"█";animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.loading{position:absolute;inset:0;z-index:2;background:var(--scr-bg);padding:1rem 1.2rem;display:none;align-content:center}
+.loading.on{display:grid}
+.base{border:8px solid var(--line);border-top:0;background:var(--panel);display:flex;align-items:center;gap:1rem;padding:.9rem 1.2rem;border-radius:0 0 8px 8px}
+.slot{flex:0 1 190px;height:16px;background:#000;border:3px solid var(--dim);transition:box-shadow .2s}
+.slot.hot{box-shadow:0 0 22px var(--fg);border-color:var(--hi)}
+.cab{border:8px solid var(--line);background:var(--panel);padding:.8rem 1rem 0}
+.cab h2{font-size:.9rem;margin-bottom:.8rem}
+/* pour ancienne étagère : .shelf{display:flex;align-items:flex-end;height:118px;border-bottom:8px solid var(--line);padding-bottom:6px} */
+.shelf{display:flex; align-items:flex-end; gap:12px; min-height:118px; height:auto; border-bottom:8px solid var(--line); padding:0 6px 6px; flex-wrap:wrap;}
+.floppy{position:relative;width:96px;height:96px;background:var(--line);border:0;border-radius:6px 6px 16px 6px;cursor:grab;touch-action:none;padding:0;font-family:"Silkscreen",monospace;font-size:.7rem;color:#04110A;transition:transform .3s cubic-bezier(.2,1.4,.4,1)}
+.floppy::before{content:"";position:absolute;top:0;left:26px;width:44px;height:30px;background:var(--dim)}
+.floppy .lab{position:absolute;left:10px;right:10px;bottom:8px;height:44px;background:var(--hi);display:grid;place-items:center}
+.floppy.drag{transition:none;cursor:grabbing;z-index:20}
+.floppy:hover{filter:brightness(1.25)}
+
+.section{padding:clamp(1.5rem,5vw,3rem) 0 clamp(3rem,8vw,5rem)}
+.section h2{font-size:clamp(1.6rem,5vw,3.2rem);margin-bottom:2rem;color:var(--hi)}
+.index{list-style:none;margin:0;padding:0}
+.row{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:.6rem 2.5rem;padding:1.4rem 0;border-top:2px dashed var(--line);text-decoration:none;transition:padding-left .25s}
+.index li:last-child .row{border-bottom:2px dashed var(--line)}
+.row .t{font-family:"Silkscreen",monospace;font-weight:700;font-size:clamp(1.3rem,3.6vw,2.2rem);line-height:1.1}
+.row p{margin:0 0 .3rem}
+.row .s{color:var(--dim)}
+.row:hover{padding-left:1.2rem;color:var(--hi)}
+@media (max-width:640px){.row{grid-template-columns:1fr}}
+.about p{max-width:36ch;margin:0 0 1.5rem;font-size:clamp(1.6rem,3.4vw,2.2rem)}
+.team{list-style:none;padding:0;margin:2rem 0 0;display:grid;gap:.8rem;max-width:48ch}
+.team li{border-left:6px solid var(--line);padding-left:1rem}
+.contact a.mail{display:inline-block;font-family:"Silkscreen",monospace;font-weight:700;font-size:clamp(1rem,4.2vw,2.6rem);line-height:1.2;word-break:break-word;color:var(--hi)}
+#retour{margin:0 0 3rem}
+footer{padding:1.5rem 0 3rem;color:var(--dim);font-size:1.2rem}
+
+</style>
+</head>
+
+<!-- Retour à l'HTML -->
+<body>
+<div class="wrap">
+  <header>
+    <a id="logo" href="#accueil">HELLAGOOS games </a>
+    <!-- <nav class="tools" aria-label="Navigation principale">
+      <a href="#jeux" data-en="Our games">Nos jeux</a>
+      <a href="#studio" data-en="The studio">Qui sommes nous ?</a>
+      <a href="#contact" data-en="Contact">Contact</a> -->
+      <button id="lang" type="button" aria-label="Switch to English">EN</button>
+    <!--</nav>-->
+  </header>
+
+   <main>
+    <section class="page" id="page-accueil">
+      <div class="desk">
+        <div>
+          <div class="monitor">
+            <div class="screen" tabindex="0" aria-label="ordi news">
+              <h1>&gt;_ NEWS.TXT</h1>
+              <div class="news" id="news"></div>
+              <p class="status" data-en="Insert a floppy disk in drive A:">Glissez une disquette dans le lecteur A:</p>
+              <div class="loading" id="loading" aria-live="polite"><div id="loadtxt"></div></div>
+            </div>
+          </div>
+          <div class="base"><span>A:</span><div class="slot" id="slot"></div></div>
+        </div>
+        <div class="cab">
+          <!-- ancienne étagère <h2 data-en="PAGES">PAGES</h2>
+          <div class="shelf"><button class="floppy" data-page="jeux" type="button"><span class="lab" data-en="GAMES">JEUX</span></button></div>
+          <div class="shelf"><button class="floppy" data-page="studio" type="button"><span class="lab" data-en="STUDIO">STUDIO</span></button></div>
+          <div class="shelf"><button class="floppy" data-page="contact" type="button"><span class="lab">CONTACT</span></button></div>
+          <div class="shelf"><button class="floppy" data-page="???" type="button"><span class="lab">???</span></button></div>
+          <div class="shelf"><button class="floppy" data-page="archive" type="button"><span class="lab" data-en="ARCHIVE">ARCHIVE</span></button></div> -->
+          <div class="cab">
+          <h2 data-en="PAGES">PAGES</h2>
+
+          <!-- Étagère 1 : Jeux -->
+          <div class="shelf">
+            <button class="floppy" data-page="jeux" type="button">
+              <span class="lab" data-en="GAMES">JEUX</span>
+            </button>
+          </div>
+
+          <!-- Étagère 2 : Studio et Contact -->
+          <div class="shelf">
+            <button class="floppy" data-page="studio" type="button">
+              <span class="lab" data-en="STUDIO">STUDIO</span>
+            </button>
+
+            <button class="floppy" data-page="contact" type="button">
+              <span class="lab">CONTACT</span>
+            </button>
+          </div>
+          
+        <!-- Étagère 3 : Archive -->
+          <div class="shelf">
+            <button class="floppy" data-page="archive" type="button">
+              <span class="lab">ARCHIVE</span>
+            </button>
+          </div>
+
+          <!-- Étagère 4 : Secrets -->
+          <div class="shelf">
+            <button class="floppy" data-page="secret" type="button">
+              <span class="lab">???</span>
+            </button>
+          </div>
+        </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="page section" id="page-jeux" hidden>
+          <h2 data-en="Our games">Nos jeux</h2>
+          <ul class="index">
+            <li><a class="row" href="#"><span class="t">Projet Patatanic</span><span><p data-en="A short metroidvania like.">Un court metroidvania like</p><span class="s" data-en="Metroidvania Like, tbd">Metroidvania Like, tbd</span></span></a></li>
+            <li><div class="row"><span class="t">Test 1</span><div><p data-en="An experimental (literally) visual novel in 3 chapters. Solo-developed by moulgo.">Un visual novel expérimental (littéralement) en 3 chapitres. Développé en solo par moulgo.</p><p><span data-en="Available for Windows and Mac on ">Disponible pour Windows et Mac sur </span><a href="https://moulgo.itch.io/test-1" target="_blank" rel="noopener noreferrer">itch.io</a><span data-en=" and "> et sur </span><a href="https://gamejolt.com/games/test1/1044294" target="_blank" rel="noopener noreferrer">Game Jolt</a>.</p><span class="s" data-en="Visual Novel, 2024-09-07 - TBD">Visual Novel, 07/09/2024 - TBD</span></div></div></li>
+            </ul>
+        </section>
+
+    <section class="page section about" id="page-studio" hidden>
+          <h2 data-en="The studio">Le studio</h2>
+          <p data-en="We have no idea what we're doing but we're doing it for the love of the game!">On sait pas ce qu'on fait mais on le fait par plaisir !</p>
+          <ul class="team">
+            <li data-en="<strong>moulgo</strong>, Gamedesign, code, music, story and dialogues, comunity management, legal."><strong>moulgo</strong> : Gamedesign, code, musique, histoire et dialogues, comunity management, légal.</li><center><img src="media/moulgo_tmp.png" width="100" height="100"></center>
+            </br>
+            <li data-en="<strong>Timlelouche</strong>: Gamedesign, level design, code."><strong>Timlelouche</strong> : Gamedesign, level design, code.</li> <center><img src="media/timlelouche_tmp.png" width="100" height="100"></center>
+          </br>
+          </ul>
+          <ul class="Socials">
+            <a><p data-en = "Twitter, Instagram, Tiktok, Youtube">Twitter, Instagram, Tiktok, Youtube</p></a>
+          </ul>
+        </section>
+
+    <section class="page section contact" id="page-contact" hidden>
+      <h3 data-en="Contact moulgo by email (you can also reach out on our socials)">Contacter moulgo par email (vous pouvez aussi nous contacter via nos réseaux sociaux)</h3>
+      </br>
+      <a class="mail" href="mailto:contactmoulgo@yahoo.com">contactmoulgo@yahoo.com</a>
+    </section>
+
+    <section class="page section" id="page-archive" hidden>
+      <h2 data-en="News archive">Archives des news</h2>
+      <div class="news" id="archive-news"></div>
+    </section>
+    
+    <section class="page section" id="page-perdu" hidden>
+      <h2 data-en="Disk not found">Disquette introuvable</h2>
+      <p data-en="This page does not exist. Or it hides very well.">Cette page n’existe pas. Ou alors elle se cache très bien.</p>
+    </section>
+  </main> 
+
+  <!-- <a class="btn" id="retour" href="#accueil" hidden data-en="&lt; Back to the menu.">&lt; Retour au menu.</a> -->
+  <footer data-en="© 2026 moulgo, HELLAGOOS games by moulgo.">© 2026 moulgo, HELLAGOOS games by moulgo.</footer>
+</div>
+
+<!-- Java Script-->
+<script>
+var NEWS=[
+  /*{d:"2026-10-30",fr:"test",en:"test"},*/
+];
+
+var lang="fr";
+function T(fr,en){return lang==="en"?en:fr;}
+function renderNews(){
+  var box=document.getElementById("news");
+  if(!NEWS.length){box.innerHTML="<p>"+T("Aucune news.","No news.")+"</p>";return;}
+  box.innerHTML=NEWS.map(function(n){return "<article><time>"+n.d+"</time><p>"+(lang==="en"?n.en:n.fr)+"</p></article>";}).join("");
+}
+
+function renderArchive(){
+  var box = document.getElementById("archive-news");
+  var allNews = NEWS.slice().sort(function(a, b){
+    return b.d.localeCompare(a.d);
+  });
+  if(!allNews.length){
+    box.innerHTML = "<p>" + T("Aucune archive pour le moment.", "No archived news yet.") + "</p>";
+    return;
+  }
+  box.innerHTML = allNews.map(function(n){
+    return "<article><time>" + n.d + "</time><p>" +
+      (lang === "en" ? n.en : n.fr) +
+      "</p></article>";
+  }).join("");
+}
+
+var langBtn=document.getElementById("lang");
+document.querySelectorAll("[data-en]").forEach(function(el){el.dataset.fr=el.innerHTML;});
+function setLang(l){
+  lang=l;document.documentElement.lang=l;
+  document.querySelectorAll("[data-en]").forEach(function(el){el.innerHTML=l==="en"?el.dataset.en:el.dataset.fr;});
+  langBtn.textContent=l==="en"?"FR":"EN";
+  langBtn.setAttribute("aria-label",l==="en"?"Passer en français":"Switch to English");
+  renderNews();
+  renderArchive();
+  try{localStorage.setItem("lang",l);}catch(e){}
+}
+langBtn.addEventListener("click",function(){setLang(lang==="fr"?"en":"fr");});
+var saved=null;try{saved=localStorage.getItem("lang");}catch(e){}
+setLang(saved==="en"||saved==="fr"?saved:"fr");
+
+function route(){
+  var id=(location.hash||"#accueil").slice(1),found=false;
+  document.querySelectorAll(".page").forEach(function(p){var on=(p.id==="page-"+id);p.hidden=!on;if(on)found=true;});
+  if(!found)document.getElementById("page-perdu").hidden=false;
+  document.querySelectorAll(".tools a").forEach(function(a){if(a.getAttribute("href")==="#"+id)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});
+  //document.getElementById("retour").hidden=(id==="accueil");
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);
+route();
+
+(function(){
+  var logo=document.getElementById("logo"),txt=logo.textContent.trim();
+  logo.setAttribute("aria-label",txt);logo.textContent="";
+  var L=Array.from(txt).map(function(c){
+    var s=document.createElement("span");s.setAttribute("aria-hidden","true");
+    if(c===" ")s.className="sp";else s.textContent=c;
+    logo.appendChild(s);return s;
+  });
+  document.addEventListener("pointermove",function(e){
+    L.forEach(function(s){
+      var r=s.getBoundingClientRect(),dx=r.left+r.width/2-e.clientX,dy=r.top+r.height/2-e.clientY;
+      var d=Math.hypot(dx,dy)||1,f=1-d/170;
+      s.style.transform=d<170?"translate("+(dx/d*f*40)+"px,"+(dy/d*f*40)+"px) rotate("+(dx/d*f*30)+"deg)":"";
+    });
+  });
+})();
+
+var toast=document.getElementById("toast"),tt;
+function dis(m){toast.textContent=m;toast.classList.add("on");clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove("on");},2600);}
+var slot=document.getElementById("slot"),loading=document.getElementById("loading"),loadtxt=document.getElementById("loadtxt"),busy=false;
+function hit(r,x,y){return x>r.left-30&&x<r.right+30&&y>r.top-30&&y<r.bottom+30;}
+function load(page){
+  if(busy)return;
+  busy=true;loading.classList.add("on");
+  var n=0,name=page.toUpperCase()+".DSK";
+  var iv=setInterval(function(){
+    n++;
+    loadtxt.textContent=T("LECTURE DE ","READING ")+name+"\n["+"#".repeat(n)+".".repeat(10-n)+"]";
+    loadtxt.style.whiteSpace="pre";
+    if(n>=10){clearInterval(iv);location.hash="#"+page;setTimeout(function(){loading.classList.remove("on");busy=false;},60);}
+  },110);
+}
+document.querySelectorAll(".floppy").forEach(function(f){
+  var sx,sy,moving=false,down=false;
+  f.addEventListener("pointerdown",function(e){down=true;moving=false;sx=e.clientX;sy=e.clientY;f.setPointerCapture(e.pointerId);});
+  f.addEventListener("pointermove",function(e){
+    if(!down)return;
+    var dx=e.clientX-sx,dy=e.clientY-sy;
+    if(!moving&&Math.hypot(dx,dy)>6){moving=true;f.classList.add("drag");}
+    if(moving){f.style.transform="translate("+dx+"px,"+dy+"px) rotate("+(dx/20)+"deg)";slot.classList.toggle("hot",hit(slot.getBoundingClientRect(),e.clientX,e.clientY));}
+  });
+  f.addEventListener("pointerup",function(e){
+    if(!down)return;down=false;
+    var over=hit(slot.getBoundingClientRect(),e.clientX,e.clientY);
+    f.classList.remove("drag");slot.classList.remove("hot");f.style.transform="";
+    if(!moving||over)load(f.dataset.page);
+    else dis(T("Pas dans le lecteur. Visez le A:","Not in the drive. Aim for A:"));
+  });
+  f.addEventListener("click",function(e){if(e.detail===0)load(f.dataset.page);}); // clavier : Entrée ou Espace
+});
+
+console.log("%cHello There!","font-size:20px;color:#9DFFB5");
+
+</script>
+</body>
+</html>
